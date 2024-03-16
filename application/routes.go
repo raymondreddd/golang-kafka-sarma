@@ -1,6 +1,7 @@
 package application
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -25,6 +26,8 @@ func (a *App) loadRoutes() {
 	router.Route("/orders", a.loadOrderRoutes)
 
 	a.router = router
+
+	fmt.Println("Routes loaded")
 }
 
 func (a *App) loadOrderRoutes(router chi.Router) {
@@ -35,6 +38,8 @@ func (a *App) loadOrderRoutes(router chi.Router) {
 			Client: a.rdb,
 		},
 	}
+
+	fmt.Println("Order Routes loaded")
 
 	/*
 			A POST request to the webserver has one endpoint that receives a request and routes it
@@ -50,6 +55,6 @@ func (a *App) loadOrderRoutes(router chi.Router) {
 	*/
 	router.Get("/{id}", orderHandler.GetById)
 	router.Put("/", orderHandler.UpdateById)
-	router.Post("/", orderHandler.DeleteById)
+	router.Delete("/", orderHandler.DeleteById)
 
 }

@@ -19,14 +19,16 @@ type Order struct {
 // CRUD methods on Order
 func (o *Order) Create(w http.ResponseWriter, r *http.Request) {
 
+	fmt.Println("Create handler called")
 	// data we expect from client
 	var body struct {
 		CustomerID uuid.UUID        `json:"customer_id"`
-		LineItems  []model.LineItem `json:"line_items`
+		LineItems  []model.LineItem `json:"line_items"`
 	}
 
 	// decode the json data
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		fmt.Println("Error:", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -56,9 +58,11 @@ func (o *Order) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// fmt.Println("object sending:", res)
+
 	// all is ok, send 201
-	w.Write(res)
 	w.WriteHeader(http.StatusCreated)
+	w.Write(res)
 }
 
 func (o *Order) List(w http.ResponseWriter, r *http.Request) {
